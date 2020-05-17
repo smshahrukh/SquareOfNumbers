@@ -1,0 +1,66 @@
+<html>
+  <head></head>
+  <body>
+    <input id="input" /> <br />
+    <input type="button" onclick="getInput()" value="Take Sqaure" /> <br />
+    <input id="output" disabled />
+
+    <script>
+      function repeatedCharacters(wholeString) {
+        var obj = {};
+        for (x = 0; x < wholeString.length; x++) {
+          var l = wholeString.charAt(x);
+          obj[l] = isNaN(obj[l]) ? 1 : obj[l] + 1;
+        }
+        return obj;
+      }
+
+      function compare(inputValues, outputValues) {
+        if (inputValues.length !== outputValues.length) {
+          return false;
+        }
+        for (let i = 0; i < inputValues.length; i++) {
+          if (inputValues[i] !== outputValues[i]) {
+            return false;
+          }
+        }
+        return true;
+      }
+      function getPower(n, m) {
+        return n ** m;
+      }
+      function getOutput(largestValue, smallerValue, array) {
+        let output = -1;
+        for (let i = largestValue; i > smallerValue; i--) {
+          let outputStringArray = Object.values(
+            repeatedCharacters(`${getPower(i, 2)}`)
+          ).sort();
+          if (compare(array, outputStringArray)) {
+            output = getPower(i, 2);
+            return output;
+          }
+        }
+      }
+      function getInput() {
+        const inputValue = document.getElementById("input").value;
+        const outputElement = document.getElementById("output");
+
+        if (inputValue.length > 0 && inputValue.length < 10) {
+          let inputValueArray = Object.values(
+            repeatedCharacters(inputValue)
+          ).sort();
+          const largestValue = Math.ceil(
+            Math.sqrt(getPower(10, inputValue.length) - 1)
+          );
+          const smallerValue = Math.ceil(
+            Math.sqrt(getPower(10, inputValue.length - 1) - 1)
+          );
+          const output = getOutput(largestValue, smallerValue, inputValueArray);
+          outputElement.value = output;
+        }
+
+        console.log("Input length should be between 0 and 10");
+      }
+    </script>
+  </body>
+</html>
